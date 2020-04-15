@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -17,7 +16,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
  */
 public class MapReduce {
 	
-	public static class WordMapper extends Mapper<Object, Text, Text, IntWritable>{
+	public static class ImageMapper extends Mapper<Object, Text, Text, IntWritable>{
 		/**
 		 * Receives a line of text and parses it
 		 */
@@ -31,7 +30,7 @@ public class MapReduce {
 		}
 	}
 	
-	public static class WordReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
+	public static class ImageScoreReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
 		/**
 		 * Combine the scores for each image
 		 */
@@ -57,11 +56,11 @@ public class MapReduce {
 			System.exit(2);
 		}
 		
-		Job job = Job.getInstance(conf, "Map Reduce");
+		Job job = Job.getInstance(conf, "Image Impact");
 		job.setJarByClass(MapReduce.class);
-		job.setMapperClass(WordMapper.class);
-		job.setCombinerClass(WordReducer.class);
-		job.setReducerClass(WordReducer.class);
+		job.setMapperClass(ImageMapper.class);
+		job.setCombinerClass(ImageScoreReducer.class);
+		job.setReducerClass(ImageScoreReducer.class);
 //		job.setNumReduceTasks(0); //changeable 0 works
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
